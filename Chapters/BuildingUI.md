@@ -324,6 +324,20 @@ MGCardElement >> card: aCard
 		ifFalse: [ self showBackFace ].
 ```
 
+We can do another step to factor nicely the behavior of the method `card:`.
+We define a new method called `showCardFace`
+
+```
+MGCardElement >> showCardFace
+	card isFlipped
+		ifTrue: [ self showFrontFace ]
+		ifFalse: [ self showBackFace ]
+```
+
+```
+MGCardElement>> card: aCard	"Attach a card model and subscribe to its announcements."		card := aCard.	self fillUpFrontElement.	self showCardFace.
+```
+
 ### From the model side 
 
 Now we are ready to develop the flipped side of the card. To see if we should change the card model you can use the inspector to get the card element and send it the message `card flip` or directly 
@@ -340,7 +354,7 @@ cardElement
 ### Resources
 @anchor utilitiestwo
 
-This section complements Section *@@anchor utilitiestwo@*.
+This section complements Section *@utilitiesone@*.
 If you want to use your own pngs, have a look at the class `ReaderWriterPNG` that converts PNG files into Forms. A form is a piece of graphical memory internally used by Pharo.
 So you have to convert your graphics from or to Forms. 
 

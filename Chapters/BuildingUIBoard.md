@@ -144,11 +144,10 @@ MGGameElement class >> openWithNumber
 We are now ready to add interaction to the game. 
 
 
-
-
-
 ### Conclusion
 
+The board is now ready to display the full game but the user interaction is still missing. 
+This is what we will investigate in the next chapter.
 
 
 
