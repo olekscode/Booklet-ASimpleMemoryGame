@@ -7,4 +7,4 @@ It is inspired from the 2017 original Memory Game tutorial written by A. Chis, A
 <!inputFile|path=Chapters/BuildingUI.md!>
 <!inputFile|path=Chapters/BuildingUIBoard.md!>
 <!inputFile|path=Chapters/AddingInteraction.md!>
-<!inputFile|path=Chapters/AlternativeUI.md!>
+<!inputFile|path=Chapters/AddingAnimation.md!>

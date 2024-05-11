@@ -159,8 +159,6 @@ MGGameModel >> resetStep
 		add: lastCard
 ```
 
-![Selecting two cards that are not a pair.](figures/BoardMissedPair.png width=60&label=figBoardMissedPair)
-
 ### Conclusion
 
 At this stage, you are done for the simple interaction. Future versions of this document will explain how to add animations.
