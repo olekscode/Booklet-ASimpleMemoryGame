@@ -92,7 +92,7 @@ MGCardElement >> initialize
 
 However, we don't want the card to be a circle either. 
 We would like to have a rounded rectangle so we use the `BlRoundedRectangleGeometry` class.
-We just need to give the corner radius we just defined as a parameter of the `cornerRadius:` class message. This is what we do. 
+We just need to give the corner radius as a parameter of the `cornerRadius:` class message. This is what we do. 
 
 ```
 MGCardElement >> initialize
@@ -539,5 +539,15 @@ Where the first argument is part of a method name for example 'tintin'.
 
 ### Conclusion
 
+```
+PNGReadWriter putForm: MGCardElement3 cardbackForm onFileNamed: 'CardBack.png'
+```
 
+```
+Form fromBinaryStream: IconFactoryTest new exampleIconContents base64Decoded asByteArray readStream
+```
+
+```
+String streamContents: [ :str | 	(PNGReadWriter formFromFileNamed: 'CardBack.png') storeOn: str ]
+```
 
