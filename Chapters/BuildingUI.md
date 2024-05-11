@@ -247,11 +247,20 @@ First we will initialize a text element to a simple text element.
 This element will be updated for each card model. 
 
 ```
-MGCardElement >> initializeFrontElement	frontElement := BlTextElement new
+MGCardElement >> initializeFrontElement
+	frontElement := BlTextElement new
 ```
 
 ```
-MGCardElement >> initialize	super initialize.	self initializeBackElement.	self initializeFrontElement.	self size: self cardExtent.	self layout: BlLinearLayout new alignCenter.	self background: self backgroundPaint.	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).	self card: (MGCard new symbol: $a)
+MGCardElement >> initialize
+	super initialize.
+	self initializeBackElement.
+	self initializeFrontElement.
+	self size: self cardExtent.
+	self layout: BlLinearLayout new alignCenter.
+	self background: self backgroundPaint.
+	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).
+	self card: (MGCard new symbol: $a)
 ```
 
 Second, we define the method `fillUpFrontElement` as follows: 
@@ -261,7 +270,11 @@ Second, we define the method `fillUpFrontElement` as follows:
 
 
 ```
-MGCardElement >> fillUpFrontElement	frontElement text: (card symbol asString asRopedText		fontSize: self fontPointSize;		foreground: self fontColor;		yourself)
+MGCardElement >> fillUpFrontElement
+	frontElement text: (card symbol asString asRopedText
+		fontSize: self fontPointSize;
+		foreground: self fontColor;
+		yourself)
 ```
 
 To see the actual effect (See Figure *@CardFrontManual@*) we 
@@ -272,7 +285,11 @@ face is updated, the current children are emptied and the front element is added
 card element. 
 
 ```
-MGCardElement >> card: aCard	card := aCard.	self fillUpFrontElement.	self removeChildren.	self addChild: frontElement
+MGCardElement >> card: aCard
+	card := aCard.
+	self fillUpFrontElement.
+	self removeChildren.
+	self addChild: frontElement
 ```
 
 We will use the same logic to switch back to the back face. 
@@ -285,16 +302,26 @@ Let us define two methods `showBackFace` and `showFrontFace` to encapsulate the
 logic of switching to a different face visual.
 
 ```
-MGCardElement >> showBackFace	self removeChildren.	self addChild: backElement
+MGCardElement >> showBackFace
+	self removeChildren.
+	self addChild: backElement
 ```
 
 ```
-MGCardElement >> showFrontFace	self removeChildren.	self addChild: frontElement```
+MGCardElement >> showFrontFace
+	self removeChildren.
+	self addChild: frontElement
+```
 
 We redefine the method `card:` to put in place the corresponding visual based on the flipped status of the card model. 
 
 ```
-MGCardElement >> card: aCard	card := aCard.	self fillUpFrontElement.	card isFlipped		ifTrue: [ self showFrontFace ]		ifFalse: [ self showBackFace ].
+MGCardElement >> card: aCard
+	card := aCard.
+	self fillUpFrontElement.
+	card isFlipped
+		ifTrue: [ self showFrontFace ]
+		ifFalse: [ self showBackFace ].
 ```
 
 ### From the model side 
@@ -309,4 +336,70 @@ cardElement card flip.
 cardElement
 ```
 
-Now we are ready to work on the board game.
+
+### Resources
+@anchor utilitiestwo
+
+This section complements Section *@@anchor utilitiestwo@*.
+If you want to use your own pngs, have a look at the class `ReaderWriterPNG` that converts PNG files into Forms. A form is a piece of graphical memory internally used by Pharo.
+So you have to convert your graphics from or to Forms. 
+
+Here are some little scripts (that you should execute in order if you want to reproduce their effect.)
+
+To save a form as a PNG on your disk:
+
+```
+PNGReadWriter putForm: MGCardElement cardbackForm onFileNamed: 'CardBack.png'
+```
+
+To save a form as a text (as shown above) that you can later execute to recreate the original form. 
+
+```
+| text | 
+text := String streamContents: [ :str |
+	(PNGReadWriter formFromFileNamed: 'CardBack.png') storeOn: str ].
+
+"to recreate the form from its textual representation"
+text := MGCardElement 
+Object readFrom: text readStream 
+
+```
+
+#### Using Uuencoded strings
+
+Storing a form in a plain text can produce large files, you can also use uuencoded of them.
+This is what IconFactory project is doing. 
+
+If you want to manage forms as the method cardbackForm provided in the project, you can have a look  at the IconFactory project on github. 
+
+```
+Metacello new
+    baseline: #IconFactory;
+    repository: 'github://pharo-graphics/IconFactory';
+    load
+``` 
+
+This project supports the definition of form as textual resources in methods that can be then versioned altogether with the code. 
+
+Given a base64 encoded string you can get a form with the following expression, here we take the base64 encoded string from `IconFactoryTest new exampleIconContents`
+
+```
+Form fromBinaryStream: IconFactoryTest new exampleIconContents base64Decoded asByteArray readStream
+```
+
+Following this you can generate a method body with a cache (here named icons) as follows: 
+
+```
+iconMethodTemplate
+	^ '{1}
+	"Private - Generated method"
+	^ self icons
+		at: #{1}
+		ifAbsentPut: [ Form fromBinaryStream: IconFactoryTest new exampleIconContents
+					 base64Decoded asByteArray readStream ]'
+```
+Where the first argument is part of a method name for example 'tintin'.
+
+### Conclusion
+
+We have all the visual elements for the card, so we are ready to work on the board game.
