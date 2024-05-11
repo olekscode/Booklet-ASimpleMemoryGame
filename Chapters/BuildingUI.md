@@ -1,14 +1,15 @@
 ## Basic building card graphical elements
 
 In this chapter, we will build the visual appearance of the cards step by step.
-In Bloc, visual objects are called elements, which are usually subclasses of `BlElement`, the inheritance tree root. In subsequent chapters, we will add interaction using event listeners.
+In Bloc, visual objects are called elements, which are usually subclasses of `BlElement`, the inheritance tree root. Elements are the basic visual building blocks of Bloc. 
+In subsequent chapters, we will add interaction using event listeners.
 
 
 
 ### First: the card element
 
-Our graphic element representing a card will be a subclass of the `BlElement`.
-This element has in addition a reference to a card model (as defined in the previous chapter).
+Our graphic element representing a card will be a subclass of the `BlElement`. 
+This element has, in addition, a reference to a card model (as defined in the previous chapter).
 
 ```
 BlElement << #MGCardElement
@@ -75,7 +76,7 @@ Instead of displaying a full rectangle, we want a better visual.
 Bloc lets us decide the geometry we want to give to our elements, it could be a circle, a triangle or a rounded rectangle for example, you can check available geometries by looking at subclasses of `BlElementGeometry`.
 We can also add a png as we will show later.
 
-We can start giving a circle shape to our element, we will need to use the `geometry:` message and give a `BlCircleGeometry` as a parameter. You should obtain an inspector as shown in Figure *@InspectingCirclePink@*.
+We can start giving a circle shape to our element, we will need to use the `geometry:` message and give a `BlCircleGeometry` as an argument. You should obtain an inspector as shown in Figure *@InspectingCirclePink@*.
 
 ```
 MGCardElement >> initialize
@@ -88,11 +89,11 @@ MGCardElement >> initialize
 ```
 
 
-![A card with circular background.](figures/InspectingCirclePink.png width=60&label=InspectingCirclePink)
+![A card with circular geometry.](figures/InspectingCirclePink.png width=60&label=InspectingCirclePink)
 
 However, we don't want the card to be a circle either. 
 We would like to have a rounded rectangle so we use the `BlRoundedRectangleGeometry` class.
-We just need to give the corner radius as a parameter of the `cornerRadius:` class message. This is what we do. 
+We need to give the corner radius as a argument of the `cornerRadius:` class message. This is what we do in the following `initialize` method. 
 
 ```
 MGCardElement >> initialize
@@ -101,11 +102,11 @@ MGCardElement >> initialize
 	self size: 80 @ 80.
 	self background: self backgroundPaint.
 	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).
-	self card: (MgdCardModel new symbol: $a)
+	self card: (MGCard new symbol: $a)
 ```
 
 
-You should get then a visual representation close to the one shown in Figure *@figrounded@*.
+You should get a visual representation close to the one shown in Figure *@figrounded@*.
 
 
 ![A rounded card.](figures/CardPinkRounded width=60&label=figrounded)
@@ -113,42 +114,188 @@ You should get then a visual representation close to the one shown in Figure *@f
 
 ### Two faces of a card
 
-A card has two faces: its back and its faces. 
-There are several approaches to manage this. One described in the previous tutorial is to draw directly on the canvas 
-the different 
+A card has two faces: its back and its front. 
+There are several approaches to manage this. 
+In this tutorial, we will compose i.e, add/remove elements as children of the `MGCardElement` instance. 
+
+- For the back we will add an element containing a png.
+- For the front we will add a text element with a number.
 
 
+### Defining some utilities
+@anchor utilitiesone
+
+Since we do not want to duplicate size card logic, we define a simple method to return the extent of a card. 
+
+```
+MGCardElement >> cardExtent
+
+	^ 80@80
+```
+
+And we use it to initialize the card element: 
+```
+MGCardElement >> initialize
+
+	super initialize.
+	self size: self cardExtent.
+	self background: self backgroundPaint.
+	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).
+	self card: (MGCard new symbol: $a)
+```
+
+We could do the same for the corner radius but this is not important now. 
+
+To manage the back of a card, we will read a png file and define it as a method to be able to version it. You can find the current definition on the class side of `MGCardElement`.
+
+Since this is a large method that contains the textual serialization of a png we only show the beginning of its definition:
+
+```
+MGCardElement class >> cardbackForm
+	^ Form
+		extent: 80@80
+		depth: 32
+		bits: (Bitmap newFrom: #(16777215 16777215 16777215 16777215 16777215 16777215 16777215 16777215 318767103 1526726655 2936012799 3439329279 3942645759 4294967295 4294967295 4294967295 4294967295 
+		...
+```
+
+You can read Section *@anchor utilitiestwo@* to get more information about form and PNG handling. 
 
 
+### Defining elements for card faces
 
-### Adding a flipped side to a card
-
-Now
+We add two instance variables `backElement` and `frontElement` to refer to the children that  represent the contents of the two card faces. 
 
 
 ```
 BlElement << #MGCardElement
-	slots: { #card . #backSide . #flippedSide };
+	slots: { #card . #backElement . #frontElement };
+	tag: 'Elements';
 	package: 'Bloc-Memory'
 ```
-```
-MGCardElement >> flippedSide
 
-	^ flippedSide ifNil: [ self initializeFlippedSide ]
-```
+We redefine the `initialize` method to create the `backElement` as well as adding a layout for 
+placement of the children of the `MGCardElement` instances. 
 
-We can now create the method that will create the text for the flipped side, this method will be called during initialization.
 
 ```
-MGCardElement >> initializeFlippedSide
+MGCardElement >> initialize
 
-	| elt |
-	elt := BlTextElement new text: self card symbol asRopedText.
-	elt text fontName: 'Source Sans Pro'.
-	elt text fontSize: 50.
-	elt text foreground: Color white.
-	^ elt
+	super initialize.
+	backElement := BlElement new
+		background: self class cardbackForm;
+		size:self cardExtent;
+		yourself.			
+	self size: self cardExtent.
+	self layout: BlLinearLayout new alignCenter. 
+	self background: self backgroundPaint.
+	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).
+	self card: (MGCard new symbol: $a).
 ```
+
+
+
+In the following added part: 
+
+```
+	backElement := BlElement new
+		background: self class cardbackForm;
+		size:self cardExtent;
+		yourself.	
+	frontElement := BlTextElement new.
+```
+
+We simply set a form as the background of this new element.
+The method `cardbackForm` is the method illustrated above and that you can get loading the code of this tutorial.
+If you want to create your own method, copy the logic of the method and paste the contents of the stream passed to the `storeOn:` method as in the following script:
+
+```
+String streamContents: [ :str | myForm storeOn: str ]
+```
+
+#### About layouts
+
+In addition we initialized the layout to be a linear layout so that each child of our card element is centered. 
+
+```
+	self layout: BlLinearLayout new alignCenter.
+```
+
+#### Better readibility
+
+We extract the back element creation in its own method `initializeBackElement`.
+
+```
+MGCardElement >> initializeBackElement
+
+	backElement := BlElement new
+		background: self class cardbackForm;
+		size: self cardExtent;
+		yourself
+```
+
+```
+MGCardElement >> initialize
+
+	super initialize.
+	self initializeBackElement.
+	self size: self cardExtent.
+	self layout: BlLinearLayout new alignCenter.
+	self background: self backgroundPaint.
+	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).
+
+	self card: (MGCard new symbol: $a)
+```
+
+
+### Handling the front face
+
+Now we will work on the front face visual.
+First we will initialize a text element to a simple text element. 
+This element will be updated for each card model. 
+
+```
+MGCardElement >> initializeFrontElement	frontElement := BlTextElement new
+```
+
+```
+MGCardElement >> initialize	super initialize.	self initializeBackElement.	self initializeFrontElement.	self size: self cardExtent.	self layout: BlLinearLayout new alignCenter.	self background: self backgroundPaint.	self geometry: (BlRoundedRectangleGeometry cornerRadius: 12).	self card: (MGCard new symbol: $a)
+```
+
+Second, we define the method `fillUpFrontElement` as follows: 
+
+```
+MGCardElement >> fillUpFrontElement	frontElement text: (card symbol asString asRopedText		fontSize: self fontPointSize;		foreground: self fontColor;		yourself)
+```
+
+To see the actual effect (See Figure *@CardFrontManual@*) we 
+redefine the method `card:` as follows and inspect the result of `MGCardElement new`.
+
+
+
+![Front face with a letter: inspect MGCardElement new.](figures/CardFrontManual.png width=60&label=CardFrontManual)
+
+
+```
+MGCardElement >> card: aCard	card := aCard.	self fillUpFrontElement.	self removeChildren.	self addChild: frontElement
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Now we can redefine `drawFlippedSide` to add our text element as a child of our card element
 
@@ -503,11 +650,39 @@ as shown in Figure *@figCardCross@*.
 
 
 ### Resources
+@anchor utilitiestwo
 
-If you want to use your own pngs, have a look at the class `ReaderWriterPNG` that converts PNG files into Forms. A form is a piece of graphical memory.
+This section complements Section *@@anchor utilitiestwo@*.
+If you want to use your own pngs, have a look at the class `ReaderWriterPNG` that converts PNG files into Forms. A form is a piece of graphical memory internally used by Pharo.
+So you have to convert your graphics from or to Forms. 
 
-If you want to manage forms as the method cardbackForm provided in the project, you can have a look 
-at the IconFactory project on github. 
+Here are some little scripts (that you should execute in order if you want to reproduce their effect.)
+
+To save a form as a PNG on your disk:
+
+```
+PNGReadWriter putForm: MGCardElement cardbackForm onFileNamed: 'CardBack.png'
+```
+
+To save a form as a text (as shown above) that you can later execute to recreate the original form. 
+
+```
+| text | 
+text := String streamContents: [ :str |
+	(PNGReadWriter formFromFileNamed: 'CardBack.png') storeOn: str ].
+
+"to recreate the form from its textual representation"
+text := MGCardElement 
+Object readFrom: text readStream 
+
+```
+
+#### Using Uuencoded strings
+
+Storing a form in a plain text can produce large files, you can also use uuencoded of them.
+This is what IconFactory project is doing. 
+
+If you want to manage forms as the method cardbackForm provided in the project, you can have a look  at the IconFactory project on github. 
 
 ```
 Metacello new
@@ -537,17 +712,10 @@ iconMethodTemplate
 ```
 Where the first argument is part of a method name for example 'tintin'.
 
+
 ### Conclusion
 
-```
-PNGReadWriter putForm: MGCardElement3 cardbackForm onFileNamed: 'CardBack.png'
-```
 
-```
-Form fromBinaryStream: IconFactoryTest new exampleIconContents base64Decoded asByteArray readStream
-```
 
-```
-String streamContents: [ :str | 	(PNGReadWriter formFromFileNamed: 'CardBack.png') storeOn: str ]
-```
+
 
