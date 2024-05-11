@@ -73,7 +73,7 @@ Metacello new
     load
 ```
 
-After you have loaded the MemoryTutorial project, you will get two new packages: `Bloc-Memory` and `Bloc-MemoryGame-Demo`. `Bloc-MemoryTests` contains the full implementation of the game. 
+After you have loaded the MemoryTutorial project, you will get two new packages: `Bloc-Memory` and `Bloc-MemoryGame-Tests`. `Bloc-Memory-Tests` contains the full implementation of the game. 
 
 You can browse a model of the game just executing the following code snippet:
 
@@ -87,15 +87,15 @@ To get a working game just execute the following expression.
 MGGameElement openWithNumber
 ```
 
-Since we give you all the code, if you want to write it by your own just use a different prefix for the classes.
+Since we give you all the code, if you want to write it by your own, use a different prefix for the classes.
 
 ## Game model insights
 
 Before starting with the actual graphical elements, we first need a model for our game.
 This game model will be used as the Model in the typical Model View architecture.
 On the one hand, the model does not communicate directly with the graphical elements;
-all communication is done via announcements. On the other hand, the graphic elements are 
-communicating directly with the model.
+all communication is done via announcements. On the other hand, the graphic elements 
+communicate directly with the model.
 
 In the remainder of this chapter, we describe the game model in detail. If you want to move directly to
 building graphical elements using Bloc, this model is fully defined in the package.
