@@ -1,13 +1,12 @@
 ## Adding a board view
 
-In the previous chapter, we defined all the card visualization. We are now ready to define the game board visualization.
-Basically, we will define a new element subclass and set its layout.
-
+In the previous chapter, we defined all the card visualizations. We are now ready to define the game board visualization.
+Basically, we will define a new `BlElement` subclass and set its layout.
 
 Here is a typical scenario to create the game: we create a model and its view and we assign the model as the view's model.
 
 ```
-game := MGGame numbers.
+game := MGGame withNumbers.
 grid := MGGameElement new.
 grid memoryGame: game. 
 ```
@@ -17,7 +16,8 @@ grid memoryGame: game.
 
 Let us define the class `MGGameElement` that will represent the game board. 
 As for the `MGCardElement`, it inherits from the `BlElement` class. 
-This view object holds a reference to the game model.
+The instance variable `memoryGame` holds a reference to the game model.
+
 ```
 BlElement << #MGGameElement
 	slots: { #memoryGame };
@@ -29,8 +29,8 @@ We define the `memoryGame:` setter method. We will extend it to create
 all the card elements shortly. 
 
 ```
-MGGameElement >> memoryGame: aMgdGameModel
-	memoryGame := aMgdGameModel
+MGGameElement >> memoryGame: aGameModel
+	memoryGame := aGameModel
 ```
 
 
@@ -40,7 +40,7 @@ MGGameElement >> memoryGame
 ```
 
 
-During the object initialization, we set the layout \(i.e., how sub-elements are placed inside their container\).
+During the object initialization, we set the layout (i.e., how sub-elements are placed inside their container).
 Here we define the layout to be a grid layout and we set it as horizontal.
 
 ```
@@ -55,23 +55,19 @@ MGGameElement >> initialize
 
 
 When a model is set for a board game, we use the model information to perform the following actions: 
-- we set the number of columns of the layout
+- we set the number of columns of the layout and
 - we create all the card elements paying attention to set their respective model. 
 
-Note in particular that we add all the card graphical elements as children of the board game using the message `addChild:`.
+
 
 ```
-MgdGameElement >> memoryGame: aGameModel
+MGGameElement >> memoryGame: aGameModel
 	memoryGame := aGameModel.
 	memoryGame availableCards
-		do: [ :aCard | self addChild: (MGCardElement card: aCard) ]
+		do: [ :aCard | self addChild: (MGCardElement new card: aCard) ]
 ```
 
-
-```
-MGCardElement class >> card: aCard 
-	^ self new card: aCard
-```
+Note in particular that we add all the card graphical elements as children of the board game using the message `addChild:`.
 
 
 
