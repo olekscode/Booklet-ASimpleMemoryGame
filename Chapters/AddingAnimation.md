@@ -1,4 +1,4 @@
-## Adding animation
+## Adding animations
 
 In this chapter, we will add animations to the game. 
 We will define animations and add them to the queue of card animation.
@@ -15,20 +15,39 @@ Once the transformation is defined it is added to the animation queue of the
 receiver using the message `addAnimation:`. 
 
 ```
-MGGameElement >> onFlippedFace	| animation |	animation := BlTransformAnimation scale: 0.85 @ 0.85.		animation		absolute;		easing: BlQuinticInterpolator default;		duration: 0.3 seconds.	self addAnimation: animation.	self showFrontFace
+MGGameElement >> onFlippedFace
+	| animation |
+	animation := BlTransformAnimation scale: 0.85 @ 0.85.	
+	animation
+		absolute;
+		easing: BlQuinticInterpolator default;
+		duration: 0.3 seconds.
+	self addAnimation: animation.
+	self showFrontFace
 ```
 
 We define another similar animation to put back the full size of flipped back card. 
 
 ```
-MGGameElement >> onFlippedBack	| animation |	animation := BlTransformAnimation scale: 1@1.	animation		absolute;		easing: BlEasing bounceOut;		duration: 0.35 seconds.	self addAnimation: animation.	self showBackFace
+MGGameElement >> onFlippedBack
+	| animation |
+	animation := BlTransformAnimation scale: 1@1.
+	animation
+		absolute;
+		easing: BlEasing bounceOut;
+		duration: 0.35 seconds.
+	self addAnimation: animation.
+	self showBackFace
 ```
 
 We modify the `showCardFace` method to invoke the method performing the animations
 prior to changing the visual of the cards. 
 
 ```
-MGGameElement >> showCardFace	card isFlipped		ifTrue: [ self onFlippedFace ]		ifFalse: [ self onFlippedBack ]
+MGGameElement >> showCardFace
+	card isFlipped
+		ifTrue: [ self onFlippedFace ]
+		ifFalse: [ self onFlippedBack ]
 ```
 
 ### Card disappearing animation
@@ -42,7 +61,24 @@ it is smaller.
 We replace the previous `onDisappear` method by the following one. 
 
 ```
-MGCardElement >> onDisappear	| vanish enlarge minimize disappear |	enlarge := BlTransformAnimation scale: 1.15 @ 1.15.	enlarge		absolute;		easing: BlEasing bounceOut;		duration: 0.5 seconds.	vanish := BlOpacityAnimation new		          opacity: 0;		          duration: 0.35 seconds.	minimize := BlTransformAnimation scale: 0.01 @ 0.01.	minimize		absolute;		easing: BlEasing linear;		duration: 0.35 seconds.	disappear := BlParallelAnimation withAll: { vanish . minimize }.	self addAnimation: (BlSequentialAnimation withAll: { enlarge. disappear })
+MGCardElement >> onDisappear
+	| vanish enlarge minimize disappear |
+	enlarge := BlTransformAnimation scale: 1.15 @ 1.15.
+	enlarge
+		absolute;
+		easing: BlEasing bounceOut;
+		duration: 0.5 seconds.
+	vanish := BlOpacityAnimation new
+		          opacity: 0;
+		          duration: 0.35 seconds.
+	minimize := BlTransformAnimation scale: 0.01 @ 0.01.
+	minimize
+		absolute;
+		easing: BlEasing linear;
+		duration: 0.35 seconds.
+	disappear := BlParallelAnimation withAll: { vanish . minimize }.
+
+	self addAnimation: (BlSequentialAnimation withAll: { enlarge. disappear })
 ```
 
 ### Conclusion

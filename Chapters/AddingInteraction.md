@@ -1,4 +1,4 @@
-## Adding game interaction
+## Adding game interactions
 
 In this chapter, we will add interaction to the game. We want to flip the cards by clicking on them. 
 Bloc supports such situations using two mechanisms: on one hand, event listeners handle events
@@ -133,12 +133,11 @@ Note that in the latter case, the element no longer receives events. It is used 
 ![Selecting two cards that are not in pair.](figures/BoardMissedPair.png width=50&label=figBoardMissedPair)
 
 
-### Refreshing on missed pair
+### Reminder on missed pair
 
-When the player selects two cards that are not a pair, we present the two cards as shown in Figure *@figBoardMissedPair@*.
+Remember that when the player selects two cards that are not a pair, we present the two cards as shown in Figure *@figBoardMissedPair@*.
 Now clicking on another card will flip back the previous cards. 
-
-Remember, a card will raise a notification when flipped in either direction. 
+In addition, a card raises a notification when flipped in either direction. 
 
 ```
 MGCard >> flip
@@ -150,7 +149,7 @@ MGCard >> flip
 In the method `resetStep` we see that all the previous cards are flipped (toggled).
 
 ```
-MGGameModel >> resetStep
+MGGame >> resetStep
 	| lastCard |
 	lastCard := self chosenCards  last.
 	self chosenCards 
