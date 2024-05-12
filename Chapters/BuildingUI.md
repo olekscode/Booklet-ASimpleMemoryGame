@@ -121,7 +121,7 @@ In this tutorial, we will compose i.e, add/remove elements as children of the `M
 
 
 ### Defining some utilities
-@anchor utilitiesone
+@utilitiesone
 
 Since we do not want to duplicate size card logic, we define a simple method to return the extent of a card. 
 
@@ -155,7 +155,7 @@ MGCardElement class >> cardbackForm
 		...
 ```
 
-You can read Section *@anchor utilitiestwo@* to get more information about form and PNG handling. 
+You can read Section *@utilitiestwo@* to get more information about form and PNG handling. 
 
 
 ### Defining elements for card faces
@@ -335,7 +335,12 @@ MGCardElement >> showCardFace
 ```
 
 ```
-MGCardElement>> card: aCard	"Attach a card model and subscribe to its announcements."		card := aCard.	self fillUpFrontElement.	self showCardFace.
+MGCardElement>> card: aCard
+	"Attach a card model and subscribe to its announcements."
+	
+	card := aCard.
+	self fillUpFrontElement.
+	self showCardFace.
 ```
 
 ### From the model side 
@@ -352,7 +357,7 @@ cardElement
 
 
 ### Resources
-@anchor utilitiestwo
+@utilitiestwo
 
 This section complements Section *@utilitiesone@*.
 If you want to use your own pngs, have a look at the class `ReaderWriterPNG` that converts PNG files into Forms. A form is a piece of graphical memory internally used by Pharo.
