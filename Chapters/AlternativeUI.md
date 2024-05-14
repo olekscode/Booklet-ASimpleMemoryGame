@@ -137,9 +137,9 @@ MGCardElement >> card: aCard
 		ifFalse: [ self showBackFace ].
 ```
 
-Once this method is defined, refresh the inspector and you should get a card as in Figure *@figOneLine@*.
+Once this method is defined, refresh the inspector and you should get a card as in Figure *@crossedfigOneLine@*.
 
-![A rounded card with half of the cross.](figures/CardOneLine.png width=60&label=figOneLine)
+![Using crossed back side cards.](figures/crossedmemoryExample0.png width=60&label=@crossedfigOneLine@)
 
 The backside is then an `BlElement` holding both lines, we tell this element to match its parent using constraints, meaning the element size will scale according to the parent size, this also makes our lines defined to the correct points. 
 
