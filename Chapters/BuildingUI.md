@@ -216,7 +216,7 @@ In addition we initialized the layout to be a linear layout so that each child o
 self layout: BlLinearLayout new alignCenter.
 ```
 
-#### Better readibility
+#### Better readability
 
 We extract the back element creation in its own method `initializeBackElement`.
 
