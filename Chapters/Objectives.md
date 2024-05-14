@@ -48,18 +48,18 @@ space show
 
 This tutorial is for Pharo 11.0 \(`https://pharo.org/download`\) running on the latest compatible Virtual machine. You can get them at the following address: `http://www.pharo.org/`
 
-To load Bloc, execute the following snippet in a Pharo Playground:
+%To load Bloc, execute the following snippet in a Pharo Playground:
 
-```
-[ Metacello new
-	baseline: 'Bloc';
-	repository: 'github://pharo-graphics/Bloc:master/src';
-	onConflictUseIncoming;
-	ignoreImage;
-	load ]
-		on: MCMergeOrLoadWarning
-		do: [ :warning | warning load ]
-```
+%```
+%[ Metacello new
+%	baseline: 'Bloc';
+%	repository: 'github://pharo-graphics/Bloc:master/src';
+%	onConflictUseIncoming;
+%	ignoreImage;
+%	load ]
+%		on: MCMergeOrLoadWarning
+%		do: [ :warning | warning load ]
+%```
 
 
 ### Loading the Memory Game
