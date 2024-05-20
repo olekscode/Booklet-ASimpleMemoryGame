@@ -95,7 +95,7 @@ MGGameElement >> initialize
 	self background: Color veryLightGray.
 	self layout: (BlGridLayout horizontal cellSpacing: 20).
 	self
-		constraintsDo: [ :aLayoutConstrants | 
+		constraintsDo: [ :aLayoutConstraints | 
 			aLayoutConstraints horizontal matchParent.
 			aLayoutConstraints vertical matchParent ]
 ```
