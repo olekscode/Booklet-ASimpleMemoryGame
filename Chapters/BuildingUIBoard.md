@@ -87,7 +87,7 @@ It shows that only a small part of the game is displayed. This is due to the fac
 ### Updating the container to its children
 
 A layout is responsible for the layout of the children of a container but not of the container itself. 
-For this, we should use constraints. 
+To adapt the container to the size of its children, we use the `fitContent` constraints.
 
 ```
 MGGameElement >> initialize
@@ -96,8 +96,8 @@ MGGameElement >> initialize
 	self layout: (BlGridLayout horizontal cellSpacing: 20).
 	self
 		constraintsDo: [ :aLayoutConstraints | 
-			aLayoutConstraints horizontal matchParent.
-			aLayoutConstraints vertical matchParent ]
+			aLayoutConstraints horizontal fitContent.
+			aLayoutConstraints vertical fitContent ]
 ```
 
 
@@ -137,7 +137,7 @@ MGGameElement class >> openWithNumber
 		yourself.
 	space := BlSpace new.
 	space root addChild: aGameElement.
-	space root whenLayoutedDoOnce: [ space extent: 420 @ 420 ].
+	space root whenLayoutedDoOnce: [ space extent: aGameElement size ].
 	space show
 ```
 
