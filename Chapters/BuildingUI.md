@@ -53,6 +53,8 @@ We define a method `initialize` to set the size and the default color as well as
 MGCardElement >> initialize
 	super initialize.
 	self size: 80 @ 80.
+	"A BlBackground is needed for the #background: method, but the BlPaint
+	is polymorphic with BlBackground and therefore can be used too."
 	self background: self backgroundPaint.
 	self card: (MGCard new symbol: $a)
 ```
