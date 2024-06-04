@@ -185,7 +185,7 @@ This method creates a list of cards from a list of characters and shuffles it.
 We also add an assertion in this method to verify that the caller provided enough characters to fill up the game board.
 
 ```
-MGGame >> initializeForSymbols: characters
+MGGame >> initializeForSymbols: aCollectionOfCharacters
 
 	aCollectionOfCharacters size = (self cardsCount / self matchesCount)
 		ifFalse: [ self error: 'Amount of characters must be equal to possible all combinations' ].

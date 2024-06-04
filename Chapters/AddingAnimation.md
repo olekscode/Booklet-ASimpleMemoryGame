@@ -15,7 +15,7 @@ Once the transformation is defined it is added to the animation queue of the
 receiver using the message `addAnimation:`. 
 
 ```
-MGGameElement >> onFlippedFace
+MGCardElement >> onFlippedFace
 	| animation |
 	animation := BlTransformAnimation scale: 0.85 @ 0.85.	
 	animation
@@ -29,7 +29,7 @@ MGGameElement >> onFlippedFace
 We define another similar animation to put back the full size of flipped back card. 
 
 ```
-MGGameElement >> onFlippedBack
+MGCardElement >> onFlippedBack
 	| animation |
 	animation := BlTransformAnimation scale: 1@1.
 	animation
@@ -44,7 +44,7 @@ We modify the `showCardFace` method to invoke the method performing the animatio
 prior to changing the visual of the cards. 
 
 ```
-MGGameElement >> showCardFace
+MGCardElement >> showCardFace
 	card isFlipped
 		ifTrue: [ self onFlippedFace ]
 		ifFalse: [ self onFlippedBack ]

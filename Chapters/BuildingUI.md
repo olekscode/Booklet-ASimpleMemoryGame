@@ -272,6 +272,12 @@ Second, we define the method `fillUpFrontElement` as follows:
 
 
 ```
+MGCardElement >> fontPointSize	^ 50
+
+MGCardElement >> fontColor	^ Color white
+```
+
+```
 MGCardElement >> fillUpFrontElement
 	frontElement text: (card symbol asString asRopedText
 		fontSize: self fontPointSize;

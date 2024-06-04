@@ -73,6 +73,13 @@ Note in particular that we add all the card graphical elements as children of th
 
 ![A first board - not really working.](figures/BoardStarted.png width=60&label=figBoardStarted)
 
+We define a class method `withNumbers` to create a board with numbers. 
+
+```
+MGGame class >> withNumbers	<sampleInstance>	^ self new initializeForSymbols: '12345678'
+```
+
+
 ```
 game := MGGame withNumbers.
 board := MGGameElement new.

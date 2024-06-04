@@ -13,7 +13,7 @@ Now we should add an event handler to each card because we want to know which ca
 
 
 ```
-MGGameElement >> initialize
+MGCardElement >> initialize
 	super initialize.
 	self initializeBackElement.
 	self initializeFrontElement.
@@ -67,10 +67,9 @@ MGGameElement >> memoryGame: aGame
 
 	| aCardEventListener |
 	game := aGame.
-	aCardEventListener :=
-		MGCardEventListener new
-			memoryGame: aGame;
-			yourself.
+	aCardEventListener := MGCardEventListener new
+					memoryGame: aGame;
+					yourself.
 
 	self layout columnCount: game gridSize.
 
@@ -98,7 +97,7 @@ Now we can modify the setter so that when a card model is set to a card graphica
 In the following methods, we make sure that on notifications we invoke the method just defined. 
 
 ```
-MGCardElement >>card: aCard
+MGCardElement >> card: aCard
 	card := aCard.
 	self fillUpFrontElement.
 	self showCardFace.
