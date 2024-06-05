@@ -1,6 +1,6 @@
 amsmath
 import
-graphics
+graphicx
 auxhook
 bigintcalc
 bitset
