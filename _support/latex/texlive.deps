@@ -4,11 +4,8 @@ bitset
 booktabs
 cm
 ctablestack
-datetime2
-datetime2-english
 environ
 epstopdf-pkg
-eso-pic
 etoolbox
 fira
 fontaxes
@@ -16,13 +13,13 @@ fontspec
 footmisc
 gentium-tug
 gettitlestring
-gitinfo2
 graphics
 graphics-cfg
 graphics-def
 hycolor
 hyperref
 iftex
+import
 infwarerr
 intcalc
 kvdefinekeys
@@ -32,6 +29,7 @@ l3backend
 l3kernel
 l3packages
 latex
+latex-fonts
 latexconfig
 listings
 ltxcmds
@@ -57,8 +55,8 @@ tex-ini-files
 textcase
 tikzfill
 tools
-tracklang
 trimspaces
+ulem
 unicode-data
 uniquecounter
 url
@@ -66,5 +64,4 @@ varwidth
 xcolor
 xkeyval
 xpatch
-xstring
 xtab
