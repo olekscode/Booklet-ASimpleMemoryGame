@@ -116,6 +116,18 @@ MGCard >> printOn: aStream
 		nextPut: $)
 ```
 
+In addition, we can extend the inspector to display information in the inspector.
+
+
+```
+MGCard >> inspectCard: aBuilder
+	<inspectorPresentationOrder: 1 title: 'card'>
+	| builder |
+	builder := StSimpleInspectorBuilder on: aBuilder.
+	builder key: 'card:' value: self symbol.
+	^ builder table
+```
+
 
 ### Reviewing the game model
 
