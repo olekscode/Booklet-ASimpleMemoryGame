@@ -73,7 +73,7 @@ Metacello new
     load
 ```
 
-After you have loaded the MemoryTutorial project, you will get two new packages: `Bloc-Memory` and `Bloc-MemoryGame-Tests`. `Bloc-Memory-Tests` contains the full implementation of the game. 
+After you have loaded the MemoryTutorial project, you will get two new packages: `Bloc-Memory` and `Bloc-MemoryGame-Tests`. `Bloc-Memory` contains the full implementation of the game. 
 
 You can browse a model of the game just executing the following code snippet:
 
