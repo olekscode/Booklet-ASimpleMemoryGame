@@ -21,6 +21,7 @@ The instance variable `memoryGame` holds a reference to the game model.
 ```
 BlElement << #MGGameElement
 	slots: { #memoryGame };
+	tag: 'Elements';
 	package: 'Bloc-MemoryGame'
 ```
 
@@ -76,7 +77,9 @@ Note in particular that we add all the card graphical elements as children of th
 We define a class method `withNumbers` to create a board with numbers. 
 
 ```
-MGGame class >> withNumbers	<sampleInstance>	^ self new initializeForSymbols: '12345678'
+MGGame class >> withNumbers
+	<sampleInstance>
+	^ self new initializeForSymbols: '12345678'
 ```
 
 
