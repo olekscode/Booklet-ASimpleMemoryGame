@@ -137,17 +137,17 @@ Once the layout is set with the correct information we obtain a full board as sh
 ![Displaying a full board.](figures/BoardFull.png width=60&label=figBoardFull2)
 
 
-Before adding interaction let's define a method `openWithNumber` that will open our game element with a given model.
+Before adding interaction let's define a method `openWithNumbers` that will open our game element with a given model.
 
 ```
-MGGameElement class >> openWithNumber
-	| aGameElement space |
-	aGameElement := MGGameElement new
+MGGameElement class >> openWithNumbers
+	| board space |
+	board := self new
 		memoryGame: MGGame withNumbers;
 		yourself.
 	space := BlSpace new.
-	space root addChild: aGameElement.
-	space root whenLayoutedDoOnce: [ space extent: aGameElement size ].
+	space root addChild: board.
+	space root whenLayoutedDoOnce: [ space extent: board size ].
 	space show
 ```
 
